@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->head($post); ?>
+    <?php endif; ?>
+</head>
+<body>
+    
+    <h1><?= $post->title ?></h1>
+    <time><?= $post->created->format('M d, Y') ?></time>
+    
+    <article><?= $post->content ?></article>
+    
+    <p>By: <?= $post->user->fullname ?></p>
+    
+    <ul>
+    <?php if(isset($post->category)): ?>
+        <li>
+            <span>Categories</span>
+            <ul>
+                <?php foreach($post->category as $cat): ?>
+                <li><a href="<?= $cat->page ?>"><?= $cat->name ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
+    <?php endif; ?>
+    <?php if(isset($post->tag)): ?>
+        <li>
+            <span>Tags</span>
+            <ul>
+                <?php foreach($post->tag as $tag): ?>
+                <li><a href="<?= $tag->page ?>"><?= $tag->name ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
+    <?php endif; ?>
+    </ul>
+    
+    <?php if($pagination): ?>
+        <ul>
+            <?php foreach($pagination as $label => $link): ?>
+            <li><a href="<?= $link ?>"><?= $label ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->foot($post); ?>
+    <?php endif; ?>
+</body>
+</html>

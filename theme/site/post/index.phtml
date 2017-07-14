@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->head($index); ?>
+    <?php endif; ?>
+</head>
+<body>
+    <h1>Posts</h1>
+    <ul>
+    <?php if($posts): ?>
+        <?php foreach($posts as $post): ?>
+        <li><a href="<?= $post->page ?>"><?= $post->title ?></a></li>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </ul>
+    
+    <?php if($pagination): ?>
+        <ul>
+            <?php foreach($pagination as $label => $link): ?>
+            <li><a href="<?= $link ?>"><?= $label ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->foot($index); ?>
+    <?php endif; ?>
+</body>
+</html>

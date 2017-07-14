@@ -1,0 +1,113 @@
+<?php
+/**
+ * post config file
+ * @package post
+ * @version 0.0.1
+ * @upgrade true
+ */
+
+return [
+    '__name' => 'post',
+    '__version' => '0.0.1',
+    '__git' => 'https://github.com/getphun/post',
+    '__files' => [
+        'modules/post/_db'          => [ 'install', 'remove', 'update' ],
+        'modules/post/config.php'   => [ 'install', 'remove', 'update' ],
+        'modules/post/model'        => [ 'install', 'remove', 'update' ],
+        'modules/post/library'      => [ 'install', 'remove', 'update' ],
+        'modules/post/meta'         => [ 'install', 'remove', 'update' ],
+        'modules/post/controller/RobotController.php'   => [ 'install', 'remove', 'update' ],
+        
+        'modules/post/event'        => [ 'install', 'remove' ],
+        'modules/post/controller/PostController.php'    => [ 'install', 'remove' ],
+        'theme/site/post/index.phtml' => [ 'install', 'remove' ],
+        'theme/site/post/single.phtml'=> [ 'install', 'remove' ]
+    ],
+    '__dependencies' => [
+        'site-param',
+        'formatter',
+        'site',
+        'site-meta',
+        '/db-mysql',
+        '/robot'
+    ],
+    '_services' => [],
+    '_autoload' => [
+        'classes' => [
+            'Post\\Model\\Post'                 => 'modules/post/model/Post.php',
+            'Post\\Model\\PostContent'          => 'modules/post/model/PostContent.php',
+            'Post\\Model\\PostStatistic'        => 'modules/post/model/PostStatistic.php',
+            'Post\\Controller\\RobotController' => 'modules/post/controller/RobotController.php',
+            'Post\\Controller\\PostController'  => 'modules/post/controller/PostController.php',
+            'Post\\Library\\Robot'              => 'modules/post/library/Robot.php',
+            'Post\\Meta\\Post'                  => 'modules/post/meta/Post.php',
+            'Post\\Event\\PostEvent'            => 'modules/post/event/PostEvent.php'
+        ],
+        'files' => []
+    ],
+    '_routes' => [
+        'site' => [
+            'sitePostFeedXML' => [
+                'rule' => '/post/feed.xml',
+                'handler' => 'Post\\Controller\\Robot::feedXML'
+            ],
+            'sitePostFeedJSON' => [
+                'rule' => '/post/feed.json',
+                'handler' => 'Post\\Controller\\Robot::feedJson'
+            ],
+            'sitePostSingle' => [
+                'rule' => '/post/read/:slug',
+                'handler' => 'Post\\Controller\\Post::single'
+            ],
+            'sitePost' => [
+                'rule' => '/post',
+                'handler' => 'Post\\Controller\\Post::index'
+            ]
+        ]
+    ],
+    'formatter' => [
+        'post' => [
+            'title' => 'text',
+            'updated' => 'date',
+            'created' => 'date',
+            'published' => 'date',
+            'user' => [
+                'type' => 'object',
+                'model' => 'User\\Model\\User'
+            ],
+            'publisher' => [
+                'type' => 'object',
+                'model' => 'User\\Model\\User'
+            ],
+            'page' => [
+                'type' => 'router',
+                'params' => [
+                    'for' => 'sitePostSingle'
+                ]
+            ],
+            'meta_title' => 'text',
+            'meta_description' => 'text',
+            'featured' => 'boolean',
+            'editor_pick' => 'boolean',
+            'cover' => 'media',
+            'embed' => 'embed',
+            'content' => [
+                'type' => 'partial',
+                'model' => 'Post\\Model\\PostContent',
+                'object' => 'post',
+                'field' => [
+                    'name' => 'content',
+                    'type' => 'text'
+                ]
+            ]
+        ]
+    ],
+    'robot' => [
+        'sitemap' => [
+            'post' => 'Post\\Library\\Robot::sitemap'
+        ],
+        'feed' => [
+            'post' => 'Post\\Library\\Robot::feed'
+        ]
+    ]
+];
