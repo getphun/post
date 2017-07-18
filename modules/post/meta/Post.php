@@ -103,24 +103,28 @@ class Post
             ]
         ];
         
+        if(module_exists('post-google-amphtml'))
+            $single->_metas['amphtml'] = $dis->router->to('sitePostGoogleAmphtml', ['slug'=>$post->slug]);
+        
         // schemas 
-        if($post->schema_type){
-            $schema = [
-                '@context'      => 'http://schema.org',
-                '@type'         => $post->schema_type,
-                'name'          => $post->title,
-                'description'   => $meta_desc,
-                'publisher'     => [
-                    '@type'         => 'Organization',
-                    'name'          => $dis->config->name,
-                    'url'           => $base_url,
-                    'logo'          => $base_url . 'theme/site/static/logo/500x500.png'
-                ],
-                'url'           => $meta_url,
-                'image'         => $meta_image
-            ];
-            $single->_schemas[] = $schema;
-        }
+        if(!$post->schema_type)
+            $post->schema_type = 'Article';
+        
+        $schema = [
+            '@context'      => 'http://schema.org',
+            '@type'         => $post->schema_type,
+            'name'          => $post->title,
+            'description'   => $meta_desc,
+            'publisher'     => [
+                '@type'         => 'Organization',
+                'name'          => $dis->config->name,
+                'url'           => $base_url,
+                'logo'          => $base_url . 'theme/site/static/logo/500x500.png'
+            ],
+            'url'           => $meta_url,
+            'image'         => $meta_image
+        ];
+        $single->_schemas[] = $schema;
         
         // schema breadcrumbs
         $second_item = [

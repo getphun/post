@@ -102,6 +102,17 @@ return [
             ]
         ]
     ],
+    'events' => [
+        'post:created' => [
+            'post' => 'Post\\Event\\PostEvent::created'
+        ],
+        'post:updated' => [
+            'post' => 'Post\\Event\\PostEvent::updated'
+        ],
+        'post:deleted' => [
+            'post' => 'Post\\Event\\PostEvent::deleted'
+        ]
+    ],
     'robot' => [
         'sitemap' => [
             'post' => 'Post\\Library\\Robot::sitemap'
