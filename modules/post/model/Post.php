@@ -45,8 +45,10 @@ class Post extends \Model
             $sql.= " LEFT JOIN `$table` ON `$table`.`post` = `post`.`id`";
         }
         
-        $sql.= ' WHERE :where';
-        $sql = Post::putWhere($sql, $cond);
+        if($cond){
+            $sql.= ' WHERE :where';
+            $sql = Post::putWhere($sql, $cond);
+        }
         
         if($order)
             $sql.= ' ORDER BY ' . $order;
@@ -101,8 +103,10 @@ class Post extends \Model
             $sql.= " LEFT JOIN `$table` ON `$table`.`post` = `post`.`id`";
         }
         
-        $sql.= ' WHERE :where';
-        $sql = Post::putWhere($sql, $cond);
+        if($cond){
+            $sql.= ' WHERE :where';
+            $sql = Post::putWhere($sql, $cond);
+        }
         
         $row = Post::query($sql);
         if(!$row)
