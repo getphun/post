@@ -39,7 +39,7 @@ class Robot
         foreach($posts as $post){
             $desc = $post->meta_description->safe;
             if(!$desc)
-                $desc = $post->content->chars(160);
+                $desc = $post->content->chars(250);
             
              $row = (object)[
                 'author'      => hs($post->user->fullname),
