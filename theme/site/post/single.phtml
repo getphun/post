@@ -35,6 +35,11 @@
             </ul>
         </li>
     <?php endif; ?>
+    <?php if($post->canal): ?>
+        <li>
+            Canal: <a href="<?= $post->canal->page ?>"><?= $post->canal->name ?></a>
+        </li>
+    <?php endif; ?>
     </ul>
     
     <?php if($pagination): ?>
