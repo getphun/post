@@ -48,7 +48,7 @@ class PostController extends \SiteController
     public function singleAction(){
         $slug = $this->param->slug;
         
-        $post = Post::get(['slug'=>$slug], false);
+        $post = Post::get(['slug'=>$slug, 'status'=>4], false);
         if(!$post)
             return $this->show404();
         
