@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `post` (
     `status` TINYINT DEFAULT 1,
     `featured` BOOLEAN DEFAULT FALSE,
     `editor_pick` BOOLEAN DEFAULT FALSE,
-    `title` VARCHAR(200) NOT NULL,
+    `title` VARCHAR(500) NOT NULL,
     `slug` VARCHAR(200) NOT NULL UNIQUE,
     `cover` VARCHAR(200),
     `cover_label` VARCHAR(200),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `post` (
     `source` TEXT,
     
     `schema_type` VARCHAR(50),
-    `meta_title` VARCHAR(100),
+    `meta_title` VARCHAR(500),
     `meta_description` TEXT,
     `meta_keywords` VARCHAR(200),
     
