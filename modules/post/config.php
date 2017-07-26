@@ -99,6 +99,11 @@ return [
                     'name' => 'content',
                     'type' => 'text'
                 ]
+            ],
+            'statistic' => [
+                'type'   => 'partial',
+                'model'  => 'Post\\Model\\PostStatistic',
+                'object' => 'post'
             ]
         ]
     ],
