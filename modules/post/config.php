@@ -47,13 +47,9 @@ return [
     ],
     '_routes' => [
         'site' => [
-            'sitePostFeedXML' => [
+            'sitePostFeed' => [
                 'rule' => '/post/feed.xml',
-                'handler' => 'Post\\Controller\\Robot::feedXML'
-            ],
-            'sitePostFeedJSON' => [
-                'rule' => '/post/feed.json',
-                'handler' => 'Post\\Controller\\Robot::feedJson'
+                'handler' => 'Post\\Controller\\Robot::feed'
             ],
             'sitePostSingle' => [
                 'rule' => '/post/read/:slug',

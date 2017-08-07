@@ -43,7 +43,7 @@ class Post
         
         // my rss feed?
         if(module_exists('robot'))
-            $index->_metas['feed'] = $dis->router->to('sitePostFeedXML');
+            $index->_metas['feed'] = $dis->router->to('sitePostFeed');
         
         // Schema
         $schema = [
