@@ -80,7 +80,7 @@ class Post
         $meta_url   = $post->page;
         $meta_title = $post->meta_title;
         $meta_keys  = $post->meta_keywords;
-        if(!$meta_title == '')
+        if($meta_title == '')
             $meta_title = $post->title;
             
         $page = $dis->req->getQuery('page', 1);
