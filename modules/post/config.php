@@ -18,6 +18,9 @@ return [
         'modules/post/meta'         => [ 'install', 'remove', 'update' ],
         'modules/post/controller/RobotController.php'   => [ 'install', 'remove', 'update' ],
         
+        'theme/site/static/js/post.js'      => [ 'install', 'remove', 'update' ],
+        'theme/site/static/js/post.min.js'  => [ 'install', 'remove', 'update' ],
+        
         'modules/post/event'        => [ 'install', 'remove' ],
         'modules/post/controller/PostController.php'    => [ 'install', 'remove' ],
         'theme/site/post/index.phtml' => [ 'install', 'remove' ],

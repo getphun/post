@@ -10,7 +10,7 @@
     <h1><?= $post->title ?></h1>
     <time><?= $post->created->format('M d, Y') ?></time>
     
-    <article><?= $post->content ?></article>
+    <article data-post="content"><?= $post->content ?></article>
     
     <p>By: <?= $post->user->fullname ?></p>
     
