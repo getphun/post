@@ -52,4 +52,10 @@ $(function(){
             parent.append($ifr);
         });
     });
+    
+    if($('.fb-video').get(0) && !$('#fbjs-sdk').get(0)){
+        // TODO
+        // get fb appid from meta data
+        $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId="></script>');
+    }
 });
