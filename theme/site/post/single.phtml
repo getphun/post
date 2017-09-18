@@ -4,6 +4,7 @@
     <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->head($post); ?>
     <?php endif; ?>
+    <script>POST={id:<?= $post->id ?>,stat:"<?= $this->router->to('sitePostStatistic') ?>"}</script>
 </head>
 <body>
     
@@ -53,5 +54,7 @@
     <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->foot($post); ?>
     <?php endif; ?>
+    
+    <script src="<?= $this->asset('js/post.min.js'); ?>"></script>
 </body>
 </html>

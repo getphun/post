@@ -54,8 +54,17 @@ $(function(){
     });
     
     if($('.fb-video').get(0) && !$('#fbjs-sdk').get(0)){
-        // TODO
-        // get fb appid from meta data
-        $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId="></script>');
+        var appId = $('meta[property="fb:app_id"]').prop('content');
+        $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+(appId||'')+'"></script>');
     }
+    
+    // logger
+    var logged = sessionStorage.getItem('p'+POST.id);
+    if(POST.id && !logged){
+        sessionStorage.setItem('p'+POST.id, '1');
+        $.get(POST.stat,{id:POST.id, action:'view'});
+    }
+    
+    // TODO
+    // Event listener for FB:share, FB:like, FB:comment
 });

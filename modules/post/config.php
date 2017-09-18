@@ -17,14 +17,16 @@ return [
         'modules/post/library'      => [ 'install', 'remove', 'update' ],
         'modules/post/meta'         => [ 'install', 'remove', 'update' ],
         'modules/post/controller/RobotController.php'   => [ 'install', 'remove', 'update' ],
+        'modules/post/controller/StatController.php'    => [ 'install', 'remove', 'update' ],
         
         'theme/site/static/js/post.js'      => [ 'install', 'remove', 'update' ],
         'theme/site/static/js/post.min.js'  => [ 'install', 'remove', 'update' ],
         
-        'modules/post/event'        => [ 'install', 'remove' ],
+        'modules/post/event'                            => [ 'install', 'remove' ],
         'modules/post/controller/PostController.php'    => [ 'install', 'remove' ],
-        'theme/site/post/index.phtml' => [ 'install', 'remove' ],
-        'theme/site/post/single.phtml'=> [ 'install', 'remove' ]
+        'theme/site/post/index.phtml'                   => [ 'install', 'remove' ],
+        'theme/site/post/single.phtml'                  => [ 'install', 'remove' ],
+        'etc/post/statistic'                            => [ 'install', 'remove' ]
     ],
     '__dependencies' => [
         'site-param',
@@ -42,6 +44,7 @@ return [
             'Post\\Model\\PostStatistic'        => 'modules/post/model/PostStatistic.php',
             'Post\\Controller\\RobotController' => 'modules/post/controller/RobotController.php',
             'Post\\Controller\\PostController'  => 'modules/post/controller/PostController.php',
+            'Post\\Controller\\StatController'  => 'modules/post/controller/StatController.php',
             'Post\\Library\\Robot'              => 'modules/post/library/Robot.php',
             'Post\\Meta\\Post'                  => 'modules/post/meta/Post.php',
             'Post\\Event\\PostEvent'            => 'modules/post/event/PostEvent.php'
@@ -51,16 +54,21 @@ return [
     '_routes' => [
         'site' => [
             'sitePostFeed' => [
-                'rule' => '/post/feed.xml',
-                'handler' => 'Post\\Controller\\Robot::feed'
+                'rule'      => '/post/feed.xml',
+                'handler'   => 'Post\\Controller\\Robot::feed'
             ],
             'sitePostSingle' => [
-                'rule' => '/post/read/:slug',
-                'handler' => 'Post\\Controller\\Post::single'
+                'rule'      => '/post/read/:slug',
+                'handler'   => 'Post\\Controller\\Post::single'
             ],
             'sitePost' => [
-                'rule' => '/post',
-                'handler' => 'Post\\Controller\\Post::index'
+                'rule'      => '/post',
+                'handler'   => 'Post\\Controller\\Post::index'
+            ],
+            
+            'sitePostStatistic' => [
+                'rule'      => '/post/stat',
+                'handler'   => 'Post\\Controller\\Stat::log'
             ]
         ]
     ],
