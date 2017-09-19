@@ -23,6 +23,8 @@ class Post extends \Model
         
         foreach($cond as $field => $value){
             if(!isset(Post::$chained[$field])){
+                if($field === 'q')
+                    continue;
                 $cond['post.'.$field] = $value;
                 unset($cond[$field]);
             }
@@ -81,6 +83,8 @@ class Post extends \Model
         
         foreach($cond as $field => $value){
             if(!isset(Post::$chained[$field])){
+                if($field === 'q')
+                    continue;
                 $cond['post.'.$field] = $value;
                 unset($cond[$field]);
             }
