@@ -24,7 +24,7 @@ class PostController extends \SiteController
         if($page > 1 || is_dev())
             $cache = null;
         
-        $posts = Post::get(['status'=>4], $rpp, $page, 'created DESC');
+        $posts = Post::get(['status'=>4], $rpp, $page, 'published DESC');
         if(!$posts)
             return $this->show404();
         

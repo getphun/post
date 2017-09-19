@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `post` (
     `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX `by_user` ON `post` ( `user` );
+CREATE INDEX `by_status_published` ON `post` ( `status`, `published` );
 
 CREATE TABLE IF NOT EXISTS `post_content` (
     `id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
