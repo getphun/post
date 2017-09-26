@@ -53,6 +53,26 @@ $(function(){
         });
     });
     
+    $('[data-post="embed"]').each(function(i,e){
+        var el = $(e);
+        
+        // fix facebook video vertical on desktop browser
+        var fbvs = el.find('.fb-video');
+        if(fbvs.length && screen.width > 400){
+            var size = fbvs.data('size');
+            if(size){
+                var sizes = size.split('x');
+                var width = sizes[0];
+                var height= sizes[1];
+                if(height > width){
+                    var cheight = Math.round((el.width()/16)*9);
+                    var nwidth  = Math.round((height * width) / cheight);
+                    fbvs.attr('data-width', nwidth);
+                }
+            }
+        }
+    });
+    
     if($('.fb-video').get(0) && !$('#fbjs-sdk').get(0)){
         var appId = $('meta[property="fb:app_id"]').prop('content');
         $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+(appId||'')+'"></script>');
