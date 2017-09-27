@@ -49,8 +49,11 @@ class PostController extends \SiteController
         $slug = $this->param->slug;
         
         $post = Post::get(['slug'=>$slug, 'status'=>4], false);
-        if(!$post)
+        if(!$post){
+            if(module_exists('slug-history'))
+                $this->slug->goto('post', $slug, 'sitePostSingle');
             return $this->show404();
+        }
         
         $page = $this->req->getQuery('page', 1);
         $rpp = 12;
