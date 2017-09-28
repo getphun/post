@@ -1,37 +1,63 @@
-$(function(){
+window.XPost = {
     
-    $('[data-post="content"]').each(function(i,e){
-        var el = $(e);
-        var elWidth = el.innerWidth();
+    content: function(){
+        var content = $('[data-post="content"]');
+        if(!content.get(0))
+            return;
         
-        // fix images
-        el.find('img').each(function(i,img){
-            var $img = $(img);
-            $img.addClass('img-responsive');
-            
-            // can we resize them?
-            var src = $img.attr('src');
-            if(src.substr(0,4) == 'http')
-                return;
-            
-            // resize it to fit the content
-            newsize = '_' + elWidth + 'x';
-            src = src.replace(/\.([a-zA-Z]+)$/, newsize + '\.$1');
-            $img.attr('src', src);
+        content.find('img').each(function(i,e){
+            XPost.fixImage($(e), content.width());
         });
         
-        // fix iframes
-        el.find('iframe').each(function(i,ifr){
-            var $ifr  = $(ifr);
-            if($ifr.hasClass('leave-me-alone'))
-                return;
+        content.find('iframe').each(function(i,e){
+            XPost.fixEmbed($(e));
+        });
+    },
+    
+    coverEmbed: function(){
+        var embed = $('[data-post="embed"]');
+        if(!embed.get(0))
+            return;
+        
+        var sels = ['.fb-video', '.dailymail-video', 'iframe'];
+        for(var i=0; i<sels.length; i++){
+            var emb = embed.children(sels[i]);
+            if(emb.get(0))
+                XPost.fixEmbed(emb);
+        }
+    },
+    
+    fixEmbed: function(embed){
+        
+        if(embed.hasClass('leave-me-alone'))
+            return;
+        
+        // fb video
+        if(embed.hasClass('fb-video')){
+            if(screen.width > 400){
+                var size = embed.data('size');
+                if(size){
+                    var sizes = size.split('x');
+                    var width = sizes[0];
+                    var height= sizes[1];
+                    if(height > width){
+                        var cheight = Math.round((el.width()/16)*9);
+                        var nwidth  = Math.round((height * width) / cheight);
+                        embed.attr('data-width', nwidth);
+                    }
+                }
+            }
             
-            var iwidth  = parseInt($ifr.attr('width'));
-            var iheight = parseInt($ifr.attr('height'));
-            var isrc    = $ifr.attr('src');
+            XPost.fbjs.init();
+        
+        // general iframe
+        }else if(embed.prop('tagName').toLowerCase() == 'iframe'){
+            var iwidth  = parseInt(embed.attr('width'));
+            var iheight = parseInt(embed.attr('height'));
+            var isrc    = embed.attr('src');
             
-            $ifr.removeAttr('width');
-            $ifr.removeAttr('height');
+            embed.removeAttr('width');
+            embed.removeAttr('height');
             
             var parent = $('<div></div>');
             
@@ -41,50 +67,76 @@ $(function(){
                 if(!iwidth || !iheight){
                     parent.addClass('embed-responsive embed-responsive-16by9');
                 }else{
-                    $ifr.css({width:'100%',height:'100%',position:'absolute',left:0,top:0});
+                    embed.css({width:'100%',height:'100%',position:'absolute',left:0,top:0});
                     parent.css({position:'relative',width:'100%'});
                     var percent = ( iheight / iwidth ) * 100;
                     parent.css('padding-bottom', percent + '%');
                 }
             }
             
-            $ifr.before(parent);
-            parent.append($ifr);
-        });
-    });
-    
-    $('[data-post="embed"]').each(function(i,e){
-        var el = $(e);
-        
-        // fix facebook video vertical on desktop browser
-        var fbvs = el.find('.fb-video');
-        if(fbvs.length && screen.width > 400){
-            var size = fbvs.data('size');
-            if(size){
-                var sizes = size.split('x');
-                var width = sizes[0];
-                var height= sizes[1];
-                if(height > width){
-                    var cheight = Math.round((el.width()/16)*9);
-                    var nwidth  = Math.round((height * width) / cheight);
-                    fbvs.attr('data-width', nwidth);
-                }
-            }
+            embed.before(parent);
+            parent.append(embed);
         }
-    });
+    },
     
-    if($('.fb-video').get(0) && !$('#fbjs-sdk').get(0)){
-        var appId = $('meta[property="fb:app_id"]').prop('content');
-        $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+(appId||'')+'"></script>');
+    fixImage: function(img, maxw){
+        img.addClass('img-responsive');
+        
+        // can we resize them?
+        var src = $img.attr('src');
+        if(src.substr(0,4) == 'http')
+            return;
+        
+        // resize it to fit the content
+        newsize = '_' + maxw + 'x';
+        src = src.replace(/\.([a-zA-Z]+)$/, newsize + '\.$1');
+        $img.attr('src', src);
+    },
+    
+    init: function(){
+        XPost.stat();
+        XPost.coverEmbed();
+        XPost.content();
+        
+        // TODO
+        // Event listener for FB:share, FB:like, FB:comment
+    },
+    
+    stat: function(){
+        var logged = sessionStorage.getItem('p'+POST.id);
+        if(POST.id && !logged){
+            sessionStorage.setItem('p'+POST.id, '1');
+            $.get(POST.stat,{id:POST.id, action:'view'});
+        }
+    },
+    
+    fbjs: {
+        included: false,
+        init: function(){
+            if(XPost.fbjs.included)
+                return;
+            XPost.fbjs.included = true;
+            
+            if($('#fbjs-sdk').get(0))
+                return;
+            
+            var appId = $('meta[property="fb:app_id"]').prop('content') || '';
+            $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+appId+'"></script>');
+        }
+    },
+    
+    igjs: {
+        included: false,
+        init: function(){
+            if(XPost.igjs.included)
+                false;
+            XPost.igjs.included = true;
+            
+            if($('#igjs-embed').get(0))
+                return;
+            $('body').append('<script id="igjs-embed" async defer src="//platform.instagram.com/en_US/embeds.js"></script>');
+        }
     }
-    
-    // logger
-    var logged = sessionStorage.getItem('p'+POST.id);
-    if(POST.id && !logged){
-        sessionStorage.setItem('p'+POST.id, '1');
-        $.get(POST.stat,{id:POST.id, action:'view'});
-    }
-    
-    // TODO
-    // Event listener for FB:share, FB:like, FB:comment
-});
+};
+
+XPost.init();
