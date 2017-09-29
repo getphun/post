@@ -48,8 +48,11 @@ window.XPost = {
                 parent.css('padding-bottom', percent + '%');
             }
             
-            if(el.prop('tagName').toLowerCase() == 'iframe')
+            if(el.prop('tagName').toLowerCase() == 'iframe'){
                 el.attr('frameborder', 0);
+                el.removeAttr('width');
+                el.removeAttr('height');
+            }
             
             el.before(parent);
             el.appendTo(parent);
