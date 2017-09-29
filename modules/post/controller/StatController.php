@@ -33,6 +33,6 @@ class StatController extends \SiteController
         fwrite($f, "$action\n");
         fclose($f);
         
-        $this->ajax('tengkiyu');
+        $this->ajax(['data'=>'tengkiyu']);
     }
 }
