@@ -1,6 +1,8 @@
 window.XPost = {
+    _protocol: 'http',
     
     init: function(){
+        XPost._protocol = location.protocol.replace(/:$/, '');
         XPost.stat.init();
         XPost.embed.init();
     },
@@ -84,6 +86,12 @@ window.XPost = {
         
         iframe : function(el){
             var src = el.attr('src');
+            
+            // fix mixed protocol
+            if(src.substr(0,4) == 'http'){
+                src = src.replace(/^https?:/, '');
+                el.attr('src', src);
+            }
             
             if(/vidio/.test(src)){
                 src = src.replace(/\?.+$/, '')+'?player_only=true&autoplay=false';
