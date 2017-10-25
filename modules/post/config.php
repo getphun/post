@@ -81,11 +81,13 @@ return [
             'published' => 'date',
             'user' => [
                 'type' => 'object',
-                'model' => 'User\\Model\\User'
+                'model' => 'User\\Model\\User',
+                'format' => 'user'
             ],
             'publisher' => [
                 'type' => 'object',
-                'model' => 'User\\Model\\User'
+                'model' => 'User\\Model\\User',
+                'format' => 'user'
             ],
             'page' => [
                 'type' => 'router',
