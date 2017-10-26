@@ -9,7 +9,16 @@ window.XPost = {
     
     embed: {
         init: function(){
-            var esl = 'iframe,.fb-video,.fb-post,.instagram-media,img,video';
+            var esl = [
+                    '.fb-post',
+                    '.fb-video',
+                    '.g-post',
+                    '.instagram-media',
+                    '.twitter-tweet',
+                    'iframe',
+                    'img',
+                    'video'
+                ].join(',');
             var els = $('[data-post="embed"],[data-post="content"]').find(esl);
             
             if(!els.length)
@@ -18,12 +27,16 @@ window.XPost = {
             els.each(function(i,e){
                 var el = $(e);
                 
-                if(el.hasClass('fb-video'))
-                    return XPost.embed.fbvideo(el);
                 if(el.hasClass('fb-post'))
                     return XPost.embed.fbpost(el);
+                if(el.hasClass('fb-video'))
+                    return XPost.embed.fbvideo(el);
+                if(el.hasClass('g-post'))
+                    return XPost.embed.gpembed(el);
                 if(el.hasClass('instagram-media'))
                     return XPost.embed.igembed(el);
+                if(el.hasClass('twitter-tweet'))
+                    return XPost.embed.twembed(el);
                 
                 var tagName = el.prop('tagName').toLowerCase();
                 if(tagName == 'img')
@@ -87,10 +100,17 @@ window.XPost = {
         },
         
         fbpost: function(el){
-            el.attr('class', 'fb-post');
+            el.attr('class', 'fb-postx');
             var index = XPost.fb.els.length;
             XPost.fb.els.push({el:el, done:false});
             return XPost.fb.init(index);
+        },
+        
+        gpembed: function(el){
+            el.attr('class', 'g-postx');
+            var index = XPost.gp.els.length;
+            XPost.gp.els.push({el:el, done:false});
+            return XPost.gp.init(index);
         },
         
         iframe : function(el){
@@ -198,6 +218,13 @@ window.XPost = {
             el.attr('src', src);
         },
         
+        twembed: function(el){
+            el.attr('class', 'twitter-tweetx');
+            var index = XPost.tw.els.length;
+            XPost.tw.els.push({el:el, done:false});
+            XPost.tw.init(index);
+        },
+        
         video  : function(el){
             XPost.embed.general(el);
         },
@@ -222,8 +249,30 @@ window.XPost = {
 
             if(!$('#fbjs-sdk').get(0)){
                 var appId = $('meta[property="fb:app_id"]').prop('content') || '';
-                $('body').append('<script src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+appId+'" id="fbjs-sdk"></script>');
+                $('body').append('<script id="fbjs-sdk" src="//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId='+appId+'"></script>');
             }
+        }
+    },
+    
+    gp: {
+        els: [],
+        init: function(index){
+            XPost.gp.els[index].done = true;
+            
+            var alldone = true;
+            for(var i=0; i<XPost.gp.els.length; i++){
+                if(!XPost.gp.els[i].done)
+                    return;
+            }
+            
+            for(var i=0; i<XPost.gp.els.length; i++){
+                var el  = XPost.gp.els[i].el;
+                var cls = el.attr('class');
+                XPost.gp.els[i].el.attr('class', cls.replace(/x$/, ''));
+            }
+
+            if(!$('#google-sdk').get(0))
+                $('body').append('<script id="google-sdk" src="//apis.google.com/js/platform.js" async defer></script>');
         }
     },
     
@@ -245,7 +294,7 @@ window.XPost = {
             }
             
             if(!$('#igjs-embed').get(0))
-                return $('body').append('<script id="igjs-embed" async defer src="//platform.instagram.com/en_US/embeds.js"></script>');
+                return $('body').append('<script id="igjs-embed" src="//platform.instagram.com/en_US/embeds.js" async defer></script>');
             
             var waitForIG = function(){
                 if(!window.instgrm)
@@ -254,6 +303,28 @@ window.XPost = {
             };
             
             setTimeout(waitForIG, 100);
+        }
+    },
+    
+    tw: {
+        els: [],
+        init: function(index){
+            XPost.tw.els[index].done = true;
+            
+            var alldone = true;
+            for(var i=0; i<XPost.tw.els.length; i++){
+                if(!XPost.tw.els[i].done)
+                    return;
+            }
+            
+            for(var i=0; i<XPost.tw.els.length; i++){
+                var el  = XPost.tw.els[i].el;
+                var cls = el.attr('class');
+                XPost.tw.els[i].el.attr('class', cls.replace(/x$/, ''));
+            }
+            
+            if(!$('#twjs-embed').get(0))
+                return $('body').append('<script id="twjs-embed" src="https://platform.twitter.com/widgets.js" async charset="utf-8"></script>');
         }
     },
     

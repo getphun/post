@@ -3,9 +3,6 @@
 Post module
 
 ## TODO
-1. Cover embed:
-    1. Twitter
-    1. Google Plus
 1. Data Statistic Filler
 1. Parse below syntax
 
