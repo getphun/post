@@ -230,6 +230,25 @@ window.XPost = {
                 $.get(POST.stat,{id:POST.id, action:'view'});
             }
         }
+    },
+    
+    share: function(target){
+        switch(target){
+            case 'facebook':
+                var href = 'https://www.facebook.com/sharer/sharer.php?u='+location.href;
+                window.open(href,'facebook-share', 'width=580,height=296');
+                break;
+            case 'twitter':
+                var href = 'https://twitter.com/share?text='+location.href;
+                window.open(href, 'twitter-share', 'width=550,height=235');
+                break;
+            case 'gplus':
+                var href = 'https://plus.google.com/share?url='+location.href;
+                window.open(href, 'googleplus-share', 'width=490,height=530');
+                break;
+        }
+        
+        return false;
     }
 };
 

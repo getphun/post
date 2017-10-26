@@ -63,13 +63,13 @@ class PostController extends \SiteController
             $cache = null;
         
         $post = \Formatter::format('post', $post, true);
+        $post->meta = _Post::single($post);
+        
         $params = [
             'post' => $post,
             'pagination' => [],
             'total' => 0
         ];
-        
-        $params['post']->meta = _Post::single($post);
         
         $this->respond('post/single', $params, $cache);
     }
