@@ -9,7 +9,7 @@ window.XPost = {
     
     embed: {
         init: function(){
-            var esl = 'iframe,.fb-video,.instagram-media,img,video';
+            var esl = 'iframe,.fb-video,.fb-post,.instagram-media,img,video';
             var els = $('[data-post="embed"],[data-post="content"]').find(esl);
             
             if(!els.length)
@@ -20,6 +20,8 @@ window.XPost = {
                 
                 if(el.hasClass('fb-video'))
                     return XPost.embed.fbvideo(el);
+                if(el.hasClass('fb-post'))
+                    return XPost.embed.fbpost(el);
                 if(el.hasClass('instagram-media'))
                     return XPost.embed.igembed(el);
                 
@@ -84,6 +86,13 @@ window.XPost = {
             XPost.fb.init(index);
         },
         
+        fbpost: function(el){
+            el.attr('class', 'fb-post');
+            var index = XPost.fb.els.length;
+            XPost.fb.els.push({el:el, done:false});
+            return XPost.fb.init(index);
+        },
+        
         iframe : function(el){
             var src = el.attr('src');
             
@@ -93,12 +102,28 @@ window.XPost = {
                 el.attr('src', src);
             }
             
-            if(/vidio/.test(src)){
+            // youtube
+            if(/youtu\.?be/.test(src)){
+                el.removeAttr('width');
+                el.removeAttr('height');
+                
+            // vidio
+            }else if(/vidio/.test(src)){
                 src = src.replace(/\?.+$/, '')+'?player_only=true&autoplay=false';
                 el.attr('src', src);
                 el.removeAttr('width');
                 el.removeAttr('height');
                 XPost.embed.general(el);
+            }
+            
+            // instagram
+            var rema = src.match(/instagram\.com\/p\/([^\/]+)/);
+            if(rema){
+                var uri = location.protocol+'//www.instagram.com/p/'+rema[1]+'/';
+                var div = $('<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-version="7"><a href="'+uri+'" target="_blank"></a></blockquote>');
+                el.before(div);
+                el.remove();
+                return XPost.embed.igembed(div);
             }
             
             // facebook video
@@ -112,6 +137,16 @@ window.XPost = {
                 el.before(div);
                 el.remove();
                 return XPost.embed.fbvideo(div);
+            }
+            
+            // facebook post
+            var rema = src.match(/post\.php\?href=([^&]+)/);
+            if(rema){
+                var uri = decodeURIComponent(rema[1]);
+                var div = $('<div class="fb-post" data-href="'+uri+'" data-show-text="true" data-width="auto"></div>');
+                el.before(div);
+                el.remove();
+                return XPost.embed.fbpost(div);
             }
             
             XPost.embed.general(el);
