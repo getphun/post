@@ -99,7 +99,7 @@ class Post
                 'description'   => $meta_desc,
                 'keywords'      => $meta_keys,
                 'image'         => $meta_image,
-                'type'          => 'website'
+                'type'          => 'article'
             ]
         ];
         
