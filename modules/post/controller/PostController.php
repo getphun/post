@@ -71,9 +71,9 @@ class PostController extends \SiteController
         
         $comps = Parser::getComponents($content);
         
-        // get cover component
-        if($post->cover->html){
-            $cps = Parser::getComponents($post->cover->embed);
+        // get embed component
+        if($post->embed->html){
+            $cps = Parser::getComponents($post->embed->embed);
             if($cps)
                 $comps = array_merge($comps, $cps);
         }
