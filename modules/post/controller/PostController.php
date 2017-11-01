@@ -66,7 +66,7 @@ class PostController extends \SiteController
         $post = \Formatter::format('post', $post, true);
         $post->meta = _Post::single($post);
         
-        $content = Parser::parseContent($post->content->_value);
+        $content = Parser::parseContent($post->content->value);
         $post->content = new \Formatter\Object\Text($content);
         
         $comps = Parser::getComponents($content);
