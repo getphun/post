@@ -9,6 +9,7 @@
 namespace Post\Controller;
 use Post\Meta\Post as _Post;
 use Post\Model\Post as Post;
+use Content\Library\Parser as Parser;
 
 class PostController extends \SiteController
 {
@@ -64,6 +65,21 @@ class PostController extends \SiteController
         
         $post = \Formatter::format('post', $post, true);
         $post->meta = _Post::single($post);
+        
+        $content = Parser::parseContent($post->content->_value);
+        $post->content = new Formatter\Object\Text($content);
+        
+        $comps = Parser::getComponents($content);
+        
+        // get cover component
+        if($post->cover->html){
+            $cps = Parser::getComponents($post->cover->embed);
+            if($cps)
+                $comps = array_merge($comps, $cps);
+        }
+        
+        foreach($comps as $comp)
+            $post->$comp = true;
         
         $params = [
             'post' => $post,
