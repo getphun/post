@@ -13,6 +13,9 @@ class PostEvent{
     static function general($object, $old=null){
         $dis = \Phun::$dispatcher;
         
+        $page = $dis->router->to('siteHome');
+        $dis->cache->removeOutput($page);
+        
         $page = $dis->router->to('sitePost');
         $dis->cache->removeOutput($page);
         
