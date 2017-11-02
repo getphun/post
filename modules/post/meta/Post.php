@@ -99,7 +99,10 @@ class Post
                 'description'   => $meta_desc,
                 'keywords'      => $meta_keys,
                 'image'         => $meta_image,
-                'type'          => 'article'
+                'type'          => 'article',
+                'updated_time'  => $post->updated->format('c'),
+                'published_time'=> $post->published->format('c'),
+                'article:author'=> $post->user->fullname
             ]
         ];
         
