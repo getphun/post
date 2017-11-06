@@ -51,17 +51,7 @@ class Post
             '@type'         => 'CollectionPage',
             'name'          => $meta_title,
             'description'   => $meta_desc,
-            'publisher'     => [
-                '@type'         => 'Organization',
-                'name'          => $dis->config->name,
-                'url'           => $base_url,
-                'logo'          => [
-                    '@type'         => 'ImageObject',
-                    'url'           => $base_url . 'theme/site/static/logo/200x60.png',
-                    'height'        => 60,
-                    'width'         => 200
-                ]
-            ],
+            'publisher'     => $dis->meta->schemaOrganization(),
             'url'           => $meta_url,
             'image'         => $meta_image
         ];
@@ -161,17 +151,7 @@ class Post
                 '@type'             => 'WebPage',
                 '@id'               => $meta_url
             ],
-            'publisher'     => [
-                '@type'         => 'Organization',
-                'name'          => $dis->config->name,
-                'url'           => $base_url,
-                'logo'          => [
-                    '@type'         => 'ImageObject',
-                    'url'           => $base_url . 'theme/site/static/logo/200x60.png',
-                    'height'        => 60,
-                    'width'         => 200
-                ]
-            ]
+            'publisher'     => $dis->meta->schemaOrganization()
         ];
         $single->_schemas[] = $schema;
         
