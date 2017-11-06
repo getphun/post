@@ -151,8 +151,14 @@ class Post
                 '@type'             => 'WebPage',
                 '@id'               => $meta_url
             ],
-            'publisher'     => $dis->meta->schemaOrganization()
+            'publisher'     => $dis->meta->schemaOrganization(),
+            'discussionUrl' => $post->page . '#comment',
+            'isAccessibleForFree' => true
         ];
+        if($post->source)
+            $schema['isBasedOn'] = $post->source;
+        if($post->meta_keywords)
+            $schema['keywords'] = $post->meta_keywords;
         $single->_schemas[] = $schema;
         
         // schema breadcrumbs
