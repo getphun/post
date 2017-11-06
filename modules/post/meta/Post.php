@@ -55,7 +55,12 @@ class Post
                 '@type'         => 'Organization',
                 'name'          => $dis->config->name,
                 'url'           => $base_url,
-                'logo'          => $meta_image
+                'logo'          => [
+                    '@type'         => 'ImageObject',
+                    'url'           => $base_url . 'theme/site/static/logo/200x60.png',
+                    'height'        => 60,
+                    'width'         => 200
+                ]
             ],
             'url'           => $meta_url,
             'image'         => $meta_image
@@ -74,9 +79,12 @@ class Post
         $meta_desc  = $post->meta_description->safe;
         if(!$meta_desc && $post->content)
             $meta_desc = $post->content->chars(160);
-        $meta_image = $post->cover;
-        if(!$meta_image)
+        
+        if(!$post->cover)
             $meta_image = $base_url . 'theme/site/static/logo/500x500.png';
+        else
+            $meta_image = $post->cover->abs;
+        
         $meta_url   = $post->page;
         $meta_title = $post->meta_title;
         $meta_keys  = $post->meta_keywords;
@@ -118,14 +126,30 @@ class Post
             '@type'         => $post->schema_type,
             'name'          => $post->title,
             'description'   => $meta_desc,
+            'url'           => $meta_url,
+            'image'         => $meta_image,
+            'headline'      => substr($meta_desc, 0, 110),
+            'datePublished' => $post->published->format('c'),
+            'dateModified'  => $post->published->format('c'),
+            'author'        => [
+                '@type'         => 'Person',
+                'name'          => $post->user->fullname
+            ],
+            'mainEntityOfPage' => [
+                '@type'             => 'WebPage',
+                '@id'               => $meta_url
+            ],
             'publisher'     => [
                 '@type'         => 'Organization',
                 'name'          => $dis->config->name,
                 'url'           => $base_url,
-                'logo'          => $base_url . 'theme/site/static/logo/500x500.png'
-            ],
-            'url'           => $meta_url,
-            'image'         => $meta_image
+                'logo'          => [
+                    '@type'         => 'ImageObject',
+                    'url'           => $base_url . 'theme/site/static/logo/200x60.png',
+                    'height'        => 60,
+                    'width'         => 200
+                ]
+            ]
         ];
         $single->_schemas[] = $schema;
         
