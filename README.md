@@ -3,8 +3,8 @@
 Post module
 
 ## TODO
-1. Meta article:section, article:tag
 1. Data Statistic Filler
+1. Meta `article:author` to fill user fb profile.
 1. Parse below syntax
 
 ```html

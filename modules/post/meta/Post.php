@@ -101,18 +101,40 @@ class Post
         // metas
         $single = (object)[
             '_schemas' => [],
-            '_metas'   => [
-                'title'         => $meta_title,
-                'canonical'     => $meta_url,
-                'description'   => $meta_desc,
-                'keywords'      => $meta_keys,
-                'image'         => $meta_image,
-                'type'          => 'article',
-                'updated_time'  => $post->updated->format('c'),
-                'published_time'=> $post->published->format('c'),
-                'article:author'=> $post->user->fullname
-            ]
+            '_metas'   => []
         ];
+        
+        $metas = [
+            'title'         => $meta_title,
+            'canonical'     => $meta_url,
+            'description'   => $meta_desc,
+            'keywords'      => $meta_keys,
+            'image'         => $meta_image,
+            'type'          => 'article',
+            'updated_time'  => $post->updated->format('c'),
+            'published_time'=> $post->published->format('c'),
+            
+            // TODO
+            // use fb profile url instead
+            'article:author'=> $post->user->fullname
+        ];
+        if($dis->setting->social_facebook)
+            $metas['article:publisher'] = $dis->setting->social_facebook;
+        
+        if(isset($post->tag) && $post->tag){    
+            $tags = [];
+            foreach($post->tag as $tag)
+                $tags[] = $tag->name;
+            if($tags)
+                $metas['article:tag'] = $tags;
+        }
+        
+        if(is_object($post->canal))
+            $metas['article:section'] = $post->canal->name;
+        elseif(isset($post->category) && $post->category)
+            $metas['article:section'] = $post->category[0]->name;
+        
+        $single->_metas = $metas;
         
         if(module_exists('post-google-amphtml'))
             $single->_metas['amphtml'] = $dis->router->to('sitePostGoogleAmphtml', ['slug'=>$post->slug]);
