@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->head($post); ?>
-    <?php endif; ?>
     <script>POST={id:<?= $post->id ?>,stat:"<?= $this->router->to('sitePostStatistic') ?>"}</script>
 </head>
 <body>
@@ -51,9 +49,7 @@
         </ul>
     <?php endif; ?>
     
-    <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->foot($post); ?>
-    <?php endif; ?>
     
     <script src="<?= $this->asset('js/post.min.js'); ?>"></script>
 </body>
