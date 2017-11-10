@@ -52,6 +52,8 @@ class Post extends \Model
             $sql = Post::putWhere($sql, $cond);
         }
         
+        $sql.= ' GROUP BY `post`.`id`';
+        
         if($order)
             $sql.= ' ORDER BY ' . $order;
         
@@ -111,6 +113,8 @@ class Post extends \Model
             $sql.= ' WHERE :where';
             $sql = Post::putWhere($sql, $cond);
         }
+        
+        $sql.= ' GROUP BY `post`.`id`';
         
         $row = Post::query($sql);
         if(!$row)
