@@ -71,6 +71,10 @@ return [
             'sitePostStatistic' => [
                 'rule'      => '/post/stat',
                 'handler'   => 'Post\\Controller\\Stat::log'
+            ],
+            'sitePostCounter' => [
+                'rule'      => '/post/-/counter',
+                'handler'   => 'Post\\Controller\\Stat::counter'
             ]
         ]
     ],

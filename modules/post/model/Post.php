@@ -114,8 +114,6 @@ class Post extends \Model
             $sql = Post::putWhere($sql, $cond);
         }
         
-        $sql.= ' GROUP BY `post`.`id`';
-        
         $row = Post::query($sql);
         if(!$row)
             return 0;
