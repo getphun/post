@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `post` (
     `featured` BOOLEAN DEFAULT FALSE,
     `editor_pick` BOOLEAN DEFAULT FALSE,
     `title` VARCHAR(500) NOT NULL,
-    `slug` VARCHAR(200) NOT NULL UNIQUE,
+    `slug` VARCHAR(200) COLLATE utf8_unicode_ci NOT NULL UNIQUE,
     `cover` VARCHAR(200),
     `cover_label` VARCHAR(200),
     `embed` TEXT,
